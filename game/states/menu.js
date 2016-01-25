@@ -1,6 +1,8 @@
 
 'use strict';
-function Menu() {}
+function Menu() {
+    // this.poo = {}
+}
 
 Menu.prototype = {
   preload: function() {
@@ -50,6 +52,10 @@ Menu.prototype = {
     // add our start button with a callback
     this.startButton = this.game.add.button(this.game.width/2, 300, 'startButton', this.startClick, this);
     this.startButton.anchor.setTo(0.5,0.5);
+
+    var poo = this.game.add.image(0,0,'shit');
+    poo.enableBody = true;
+    poo.scale.setTo(1,1);
   },
   startClick: function() {
     // start button click handler

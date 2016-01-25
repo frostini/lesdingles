@@ -53,14 +53,18 @@ Play.prototype = {
 
     // add keyboard controls
     this.flapKey = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
-    this.flapKey.onDown.addOnce(this.startGame, this);
-    this.flapKey.onDown.add(this.bird.flap, this.bird);
+    this.flapKey.onUp.addOnce(this.startGame, this);
+    this.flapKey.onUp.add(this.bird.flap, this.bird);
+    
+    this.hitKey = this.game.input.keyboard.addKey(Phaser.Keyboard.S);
+    this.hitKey.onDown.add(this.yay, this);
+
     // this.flapKey.onHold.add(this.bird.shit, this.bird);
    //for .flap-consider using "this.onTap = null;" instead of onDown for
 
     // add mouse/touch controls
-    this.game.input.onDown.addOnce(this.startGame, this);
-    this.game.input.onDown.add(this.bird.flap, this.bird);
+    this.game.input.onUp.addOnce(this.startGame, this);
+    this.game.input.onUp.add(this.bird.flap, this.bird);
     // this.game.input.isDown.add(this.bird.shit, this.bird);
     
 
@@ -105,9 +109,22 @@ Play.prototype = {
     //         this.game.physics.arcade.collide(this.bird, pipeGroup, this.deathHandler, null, this);
     //     }, this);
     // }
+  },
+  yay: function(){
+    console.log('yayyed');
+    // var yayy = this.add.image()
+      var poo = this.add.sprite(this.bird.x, this.bird.y, 'shit');
+      this.game.physics.arcade.enableBody(poo);
+        // poo.enableBody = true;
+        // this.game.physics.enable(poo, Phaser.Physics.ARCADE);
+        // poo.body.velocity.y = -500;0
+        // poo.allowGravity = true;
+        // poo.scale.setTo(1,1);
 
+  // this.game.physics.arcade.enableBody(poo);
+  // this.body.allowGravity = false;
+  // this.body.collideWorldBounds = true;
 
-    
   },
   generateBerries: function() {
     console.log("Berrrrrries")

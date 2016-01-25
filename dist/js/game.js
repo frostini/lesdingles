@@ -286,25 +286,25 @@ Scoreboard.prototype.update = function() {
 module.exports = Scoreboard;
 
 },{}],7:[function(require,module,exports){
-'use strict';
+// 'use strict';
 
-var Shit = function(game, x, y, frame) {
-  Phaser.Sprite.call(this, game, x, y, 'shit', frame);
-	this.game.physics.arcade.enableBody(this);
+// var Shit = function(game, x, y, frame) {
+  // Phaser.Sprite.call(this, game, x, y, 'shit', frame);
+	// this.game.physics.arcade.enableBody(this);
   // initialize your prefab here
   
-};
+// };
 
-Shit.prototype = Object.create(Phaser.Sprite.prototype);
-Shit.prototype.constructor = Shit;
+// Shit.prototype = Object.create(Phaser.Sprite.prototype);
+// Shit.prototype.constructor = Shit;
 
-Shit.prototype.update = function() {
+// Shit.prototype.update = function() {
   
   // write your prefab's specific update code here
   
-};
+// };
 
-module.exports = Shit;
+// module.exports = Shit;
 
 
 
@@ -330,7 +330,9 @@ module.exports = Boot;
 },{}],9:[function(require,module,exports){
 
 'use strict';
-function Menu() {}
+function Menu() {
+    // this.poo = {}
+}
 
 Menu.prototype = {
   preload: function() {
@@ -380,6 +382,10 @@ Menu.prototype = {
     // add our start button with a callback
     this.startButton = this.game.add.button(this.game.width/2, 300, 'startButton', this.startClick, this);
     this.startButton.anchor.setTo(0.5,0.5);
+
+    var poo = this.game.add.image(0,0,'shit');
+    poo.enableBody = true;
+    poo.scale.setTo(1,1);
   },
   startClick: function() {
     // start button click handler
@@ -446,14 +452,18 @@ Play.prototype = {
 
     // add keyboard controls
     this.flapKey = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
-    this.flapKey.onDown.addOnce(this.startGame, this);
-    this.flapKey.onDown.add(this.bird.flap, this.bird);
+    this.flapKey.onUp.addOnce(this.startGame, this);
+    this.flapKey.onUp.add(this.bird.flap, this.bird);
+    
+    this.hitKey = this.game.input.keyboard.addKey(Phaser.Keyboard.S);
+    this.hitKey.onDown.add(this.yay, this);
+
     // this.flapKey.onHold.add(this.bird.shit, this.bird);
    //for .flap-consider using "this.onTap = null;" instead of onDown for
 
     // add mouse/touch controls
-    this.game.input.onDown.addOnce(this.startGame, this);
-    this.game.input.onDown.add(this.bird.flap, this.bird);
+    this.game.input.onUp.addOnce(this.startGame, this);
+    this.game.input.onUp.add(this.bird.flap, this.bird);
     // this.game.input.isDown.add(this.bird.shit, this.bird);
     
 
@@ -498,9 +508,22 @@ Play.prototype = {
     //         this.game.physics.arcade.collide(this.bird, pipeGroup, this.deathHandler, null, this);
     //     }, this);
     // }
+  },
+  yay: function(){
+    console.log('yayyed');
+    // var yayy = this.add.image()
+      var poo = this.add.sprite(this.bird.x, this.bird.y, 'shit');
+      this.game.physics.arcade.enableBody(poo);
+        // poo.enableBody = true;
+        // this.game.physics.enable(poo, Phaser.Physics.ARCADE);
+        // poo.body.velocity.y = -500;0
+        // poo.allowGravity = true;
+        // poo.scale.setTo(1,1);
 
+  // this.game.physics.arcade.enableBody(poo);
+  // this.body.allowGravity = false;
+  // this.body.collideWorldBounds = true;
 
-    
   },
   generateBerries: function() {
     console.log("Berrrrrries")
@@ -616,7 +639,7 @@ Preload.prototype = {
     this.load.image('ground', 'assets/ground.png');
     this.load.image('title', 'assets/title.png');
     this.load.spritesheet('bird', 'assets/bird.png', 34,24,3);
-    this.load.spritesheet('pipe', 'assets/pipes.png', 54,320,2);
+    // this.load.spritesheet('pipe', 'assets/pipes.png', 54,320,2);
     this.load.image('startButton', 'assets/start-button.png');
     this.load.spritesheet('shit', 'assets/shit.png', 12,12,1);
     this.load.spritesheet('berry', 'assets/berry.png', 10, 10, 1);
