@@ -50,12 +50,17 @@ Play.prototype = {
     
     this.walk = this.person.animations.add('walk');
     this.person.animations.play('walk', 10, true);
+    
+
+
     // this.game.add.tween(person).to({x: -30}, 10000, Phaser.Easing.Linear.None, true);
-// this.game.physics.enable(person, Phaser.Physics.ARCADE);
+// this.game.physics.enable(this.person, Phaser.Physics.ARCADE);
+ this.game.physics.arcade.enableBody(this.person);
+ this.person.body.allowGravity = false;
     // person.body.velocity.y = 0;
     // person.body.collideWorldBounds = true;
-// this.person.set('body.velocity.x', - 150);
-// person.body.immovable = true;
+// this.person.body.immovable = true;
+
 
     this.ground = new Ground(this.game, 0, 400, 335, 112);
     this.game.add.existing(this.ground);
@@ -104,8 +109,18 @@ Play.prototype = {
     this.berrygenerator.timer.start();
   },
   update: function() {
+ 
+   this.person.x -= 2;
+    if (this.person.x < -this.person.width)
+    {
+        this.person.x = this.game.world.width;
+    }
+
+
+
     // enable collisions between the bird and the ground
     this.game.physics.arcade.collide(this.bird, this.ground, this.deathHandler, null, this);
+    this.game.physics.arcade.collide(this.person, this.poo, this.shittySituation, null, this);
    // if (game.input.keyboard.isDown(Phaser.Keyboard.SPACEBAR))
    //  {
    //      this.bird.shit();
@@ -120,21 +135,20 @@ Play.prototype = {
     //     }, this);
     // }
   
-   this.person.x -= 2;
 
-    if (this.person.x < -this.person.width)
-    {
-        this.person.x = this.game.world.width;
-    }
+
 
 
 
   },
+  shittySituation: function(person, poo){
+    console.log('i got yayyyyeed');
+  },
   yay: function(){
     console.log('yayyed');
     // var yayy = this.add.image()
-      var poo = this.add.sprite(this.bird.x, this.bird.y, 'shit');
-      this.game.physics.arcade.enableBody(poo);
+      this.poo = this.add.sprite(this.bird.x, this.bird.y, 'shit');
+      this.game.physics.arcade.enableBody(this.poo);
         // poo.enableBody = true;
         // this.game.physics.enable(poo, Phaser.Physics.ARCADE);
         // poo.body.velocity.y = -500;0
@@ -226,7 +240,15 @@ Play.prototype = {
         this.ground.stopScroll();
     }
     
-  }//,
+  },
+  render: function(){
+    this.game.debug.body(this.person);
+    if (this.poo){
+    this.game.debug.body(this.poo);
+      
+    }
+  }
+  //,
   // generatePipes: function() {
     // var pipeY = this.game.rnd.integerInRange(-100, 100);
     // var pipeGroup = this.pipes.getFirstExists(false);
