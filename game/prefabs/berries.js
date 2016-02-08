@@ -5,7 +5,7 @@ var Berries = function(game, parent) {
   Phaser.Group.call(this, game, parent);
   this.firstBerry = new Berry(this.game,0,0,0);
   this.add(this.firstBerry)
-  this.setAll('body.velocity.x', -150);
+  this.setAll('body.velocity.x', - 150);
   // initialize your prefab here
   
 };

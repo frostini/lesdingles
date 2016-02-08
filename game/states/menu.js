@@ -53,9 +53,9 @@ Menu.prototype = {
     this.startButton = this.game.add.button(this.game.width/2, 300, 'startButton', this.startClick, this);
     this.startButton.anchor.setTo(0.5,0.5);
 
-    var poo = this.game.add.image(0,0,'shit');
-    poo.enableBody = true;
-    poo.scale.setTo(1,1);
+    // var poo = this.game.add.image(0,0,'shit');
+    // poo.enableBody = true;
+    // poo.scale.setTo(1,1);
   },
   startClick: function() {
     // start button click handler

@@ -27,7 +27,7 @@ var Berries = function(game, parent) {
   Phaser.Group.call(this, game, parent);
   this.firstBerry = new Berry(this.game,0,0,0);
   this.add(this.firstBerry)
-  this.setAll('body.velocity.x', -150);
+  this.setAll('body.velocity.x', - 150);
   // initialize your prefab here
   
 };
@@ -383,9 +383,9 @@ Menu.prototype = {
     this.startButton = this.game.add.button(this.game.width/2, 300, 'startButton', this.startClick, this);
     this.startButton.anchor.setTo(0.5,0.5);
 
-    var poo = this.game.add.image(0,0,'shit');
-    poo.enableBody = true;
-    poo.scale.setTo(1,1);
+    // var poo = this.game.add.image(0,0,'shit');
+    // poo.enableBody = true;
+    // poo.scale.setTo(1,1);
   },
   startClick: function() {
     // start button click handler
@@ -445,6 +445,16 @@ Play.prototype = {
 
     // create and add a new Ground object
     this.losberries = this.game.add.group()
+    this.person = this.game.add.sprite(200, 380, 'person')
+    
+    this.walk = this.person.animations.add('walk');
+    this.person.animations.play('walk', 10, true);
+    // this.game.add.tween(person).to({x: -30}, 10000, Phaser.Easing.Linear.None, true);
+// this.game.physics.enable(person, Phaser.Physics.ARCADE);
+    // person.body.velocity.y = 0;
+    // person.body.collideWorldBounds = true;
+// this.person.set('body.velocity.x', - 150);
+// person.body.immovable = true;
 
     this.ground = new Ground(this.game, 0, 400, 335, 112);
     this.game.add.existing(this.ground);
@@ -508,6 +518,16 @@ Play.prototype = {
     //         this.game.physics.arcade.collide(this.bird, pipeGroup, this.deathHandler, null, this);
     //     }, this);
     // }
+  
+   this.person.x -= 2;
+
+    if (this.person.x < -this.person.width)
+    {
+        this.person.x = this.game.world.width;
+    }
+
+
+
   },
   yay: function(){
     console.log('yayyed');
@@ -639,6 +659,7 @@ Preload.prototype = {
     this.load.image('ground', 'assets/ground.png');
     this.load.image('title', 'assets/title.png');
     this.load.spritesheet('bird', 'assets/bird.png', 34,24,3);
+    this.load.spritesheet('person', 'assets/personwalking.png', 16, 23, 4);
     // this.load.spritesheet('pipe', 'assets/pipes.png', 54,320,2);
     this.load.image('startButton', 'assets/start-button.png');
     this.load.spritesheet('shit', 'assets/shit.png', 12,12,1);
