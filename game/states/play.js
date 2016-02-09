@@ -242,10 +242,9 @@ Play.prototype = {
     
   },
   render: function(){
-    this.game.debug.body(this.person);
+      this.game.debug.body(this.person);
     if (this.poo){
-    this.game.debug.body(this.poo);
-      
+      this.game.debug.body(this.poo);
     }
   }
   //,

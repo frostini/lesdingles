@@ -19,7 +19,7 @@ game.state.add('preload', PreloadState);
 game.state.start('boot');
 
   
-},{"./states/boot":8,"./states/menu":9,"./states/play":10,"./states/preload":11}],2:[function(require,module,exports){
+},{"./states/boot":7,"./states/menu":8,"./states/play":9,"./states/preload":10}],2:[function(require,module,exports){
 'use strict';
 var Berry = require('./berry')
 
@@ -70,7 +70,7 @@ module.exports = Berry;
 
 },{}],4:[function(require,module,exports){
   'use strict';
-  var Shit = require('../prefabs/shit'); 
+  // var Shit = require('../prefabs/shit'); 
 
 var Bird = function(game, x, y, frame) {
   Phaser.Sprite.call(this, game, x, y, 'bird', frame);
@@ -124,16 +124,16 @@ Bird.prototype.flap = function() {
   }
 };
 
-Bird.prototype.shit = function() {
-  if(!!this.alive) {
+// Bird.prototype.shit = function() {
+  // if(!!this.alive) {
     // this.shit = new Shit(this.game, 100, this.game.height/2);
 //     this.game.add.existing(this.shit);
 
-    console.log("Im shittttttinnnnnnn")
+    // console.log("Im shittttttinnnnnnn")
     // this.shit = new Shit(this.game, 100, this.game.height/2);
     // this.game.add.existing(this.shit);
-  }
-}
+  // }
+// }
 
 Bird.prototype.revived = function() { 
 };
@@ -151,7 +151,7 @@ Bird.prototype.onKilled = function() {
 module.exports = Bird;
 
 
-},{"../prefabs/shit":7}],5:[function(require,module,exports){
+},{}],5:[function(require,module,exports){
 'use strict';
 
 var Ground = function(game, x, y, width, height) {
@@ -286,29 +286,6 @@ Scoreboard.prototype.update = function() {
 module.exports = Scoreboard;
 
 },{}],7:[function(require,module,exports){
-// 'use strict';
-
-// var Shit = function(game, x, y, frame) {
-  // Phaser.Sprite.call(this, game, x, y, 'shit', frame);
-	// this.game.physics.arcade.enableBody(this);
-  // initialize your prefab here
-  
-// };
-
-// Shit.prototype = Object.create(Phaser.Sprite.prototype);
-// Shit.prototype.constructor = Shit;
-
-// Shit.prototype.update = function() {
-  
-  // write your prefab's specific update code here
-  
-// };
-
-// module.exports = Shit;
-
-
-
-},{}],8:[function(require,module,exports){
 
 'use strict';
 
@@ -327,7 +304,7 @@ Boot.prototype = {
 
 module.exports = Boot;
 
-},{}],9:[function(require,module,exports){
+},{}],8:[function(require,module,exports){
 
 'use strict';
 function Menu() {
@@ -396,7 +373,7 @@ Menu.prototype = {
 
 module.exports = Menu;
 
-},{}],10:[function(require,module,exports){
+},{}],9:[function(require,module,exports){
 
 'use strict';
 var Bird = require('../prefabs/bird');
@@ -641,10 +618,9 @@ Play.prototype = {
     
   },
   render: function(){
-    this.game.debug.body(this.person);
+      this.game.debug.body(this.person);
     if (this.poo){
-    this.game.debug.body(this.poo);
-      
+      this.game.debug.body(this.poo);
     }
   }
   //,
@@ -662,7 +638,7 @@ Play.prototype = {
 
 module.exports = Play;
 
-},{"../prefabs/berries":2,"../prefabs/berry":3,"../prefabs/bird":4,"../prefabs/ground":5,"../prefabs/scoreboard":6}],11:[function(require,module,exports){
+},{"../prefabs/berries":2,"../prefabs/berry":3,"../prefabs/bird":4,"../prefabs/ground":5,"../prefabs/scoreboard":6}],10:[function(require,module,exports){
 
 'use strict';
 function Preload() {

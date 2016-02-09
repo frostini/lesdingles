@@ -1,5 +1,5 @@
   'use strict';
-  var Shit = require('../prefabs/shit'); 
+  // var Shit = require('../prefabs/shit'); 
 
 var Bird = function(game, x, y, frame) {
   Phaser.Sprite.call(this, game, x, y, 'bird', frame);
@@ -53,16 +53,16 @@ Bird.prototype.flap = function() {
   }
 };
 
-Bird.prototype.shit = function() {
-  if(!!this.alive) {
+// Bird.prototype.shit = function() {
+  // if(!!this.alive) {
     // this.shit = new Shit(this.game, 100, this.game.height/2);
 //     this.game.add.existing(this.shit);
 
-    console.log("Im shittttttinnnnnnn")
+    // console.log("Im shittttttinnnnnnn")
     // this.shit = new Shit(this.game, 100, this.game.height/2);
     // this.game.add.existing(this.shit);
-  }
-}
+  // }
+// }
 
 Bird.prototype.revived = function() { 
 };
