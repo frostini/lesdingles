@@ -562,10 +562,7 @@ var Ground = require('../prefabs/ground');
 var Berry = require('../prefabs/berry');
 var Berries = require('../prefabs/berries');
 var Person1 = require('../prefabs/person_1');
-// var Building = require('../prefabs/building')
 var BuildingGroup = require('../prefabs/buildingGroup');
-// var Pipe = require('../prefabs/pipe');
-// var PipeGroup = require('../prefabs/pipeGroup');
 var Scoreboard = require('../prefabs/scoreboard');
 // var Shit = require('../prefabs/shit');
 
@@ -591,8 +588,13 @@ Play.prototype = {
     this.game.add.existing(this.bird);
     
     // this.walk = this.person.animations.add('walk');
-    this.person_1 = new Person1(this.game, 200, 400);
-    this.game.add.existing(this.person_1);
+    // this.person_1 = new Person1(this.game, 200, 400);
+    // this.game.add.existing(this.person_1);
+    this.person = this.game.add.sprite(200, 350, 'person')
+      this.person.animations.add('walk');
+    this.person.animations.play('walk', 13, true); 
+ this.game.physics.arcade.enableBody(this.person);
+ this.person.body.allowGravity = false;
 
 
 // !!Creating group to contain buildingGroups!!
@@ -619,15 +621,10 @@ this.buildings = this.game.add.group();
 
     // create and add a new Ground object
     this.losberries = this.game.add.group()
-    this.person = this.game.add.sprite(200, 350, 'person')
-      this.person.animations.add('walk');
-    this.person.animations.play('walk', 13, true); 
 
 
     // this.game.add.tween(person).to({x: -30}, 10000, Phaser.Easing.Linear.None, true);
 // this.game.physics.enable(this.person, Phaser.Physics.ARCADE);
- this.game.physics.arcade.enableBody(this.person);
- this.person.body.allowGravity = false;
     // person.body.velocity.y = 0;
     // person.body.collideWorldBounds = true;
 // this.person.body.immovable = true;
@@ -676,8 +673,7 @@ this.buildings = this.game.add.group();
     this.groundHitSound = this.game.add.audio('groundHit');
     this.scoreSound = this.game.add.audio('score');
     // this.timer = this.game.time.events.loop(5000, this.addOneTreat, this);
-    this.berrygenerator = this.game.time.events.loop(Phaser.Timer.SECOND * 5.00, this.generateBerries, this);
-    this.berrygenerator.timer.start();
+
 
 
 
@@ -698,9 +694,16 @@ this.buildings = this.game.add.group();
     // enable collisions between the bird and the ground
     this.game.physics.arcade.collide(this.bird, this.ground, this.deathHandler, null, this);
     this.game.physics.arcade.collide(this.person, this.poo, this.shittySituation, null, this);
-    this.game.physics.arcade.collide(this.person_1, this.poo, this.shittySituation, null, this);
-    this.game.physics.arcade.collide(this.bird, this.BuildingGroup, this.deathHandler, null, this);
+    // this.game.physics.arcade.collide(this.person_1, this.poo, this.shittySituation, null, this);
+    // this.game.physics.arcade.collide(this.bird, this.BuildingGroup, this.deathHandler, null, this);
    
+    this.buildings.forEach(function(buildingGroup) {
+        this.game.physics.arcade.collide(this.bird, buildingGroup, this.deathHandler, null, this);
+    }, this);
+
+
+
+
 // if(!this.gameOver){
 //     if(this.player.body.bottom >= this.world.bounds.bottom){
 //         this.setGameOver();
@@ -803,6 +806,10 @@ this.buildings = this.game.add.group();
         this.instructionGroup.destroy();
     this.buildingGenerator = this.game.time.events.loop(Phaser.Timer.SECOND * 1.25, this.generateBuildings, this);
     this.buildingGenerator.timer.start();
+
+    this.berrygenerator = this.game.time.events.loop(Phaser.Timer.SECOND * 5.00, this.generateBerries, this);
+    this.berrygenerator.timer.start();
+
     }
   },
   checkScore: function(pipeGroup) {
