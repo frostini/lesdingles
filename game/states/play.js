@@ -3,7 +3,7 @@ var Bird = require('../prefabs/bird');
 var Ground = require('../prefabs/ground');
 var Berry = require('../prefabs/berry');
 var Berries = require('../prefabs/berries');
-var Person1 = require('../prefabs/person_1');
+var Person = require('../prefabs/person');
 var BuildingGroup = require('../prefabs/buildingGroup');
 var Scoreboard = require('../prefabs/scoreboard');
 var Shit = require('../prefabs/shit');
@@ -28,7 +28,7 @@ Play.prototype = {
     this.game.add.existing(this.bird);
     
     // create person to instantiate on game start
-    this.person_1 = new Person1(this.game, this.game.width, 400);
+    this.person = new Person(this.game, this.game.width, 400);
 
 // !!Creating group to contain buildingGroups!!
     this.buildings = this.game.add.group();
@@ -92,7 +92,7 @@ Play.prototype = {
     // enable collisions between the bird and the ground
     this.game.physics.arcade.collide(this.bird, this.ground, this.deathHandler, null, this);
     // this.game.physics.arcade.collide(this.person, this.poo, this.shittySituation, null, this);
-    this.game.physics.arcade.collide(this.person_1, this.poo, this.shittySituation, null, this);
+    this.game.physics.arcade.collide(this.person, this.poo, this.shittySituation, null, this);
     // this.game.physics.arcade.collide(this.bird, this.BuildingGroup, this.deathHandler, null, this);
    
     this.buildings.forEach(function(buildingGroup) {
@@ -136,7 +136,7 @@ Play.prototype = {
         this.bird.body.allowGravity = true;
         this.bird.alive = true;
         this.instructionGroup.destroy();
-        this.game.add.existing(this.person_1);
+        this.game.add.existing(this.person);
         this.buildingGenerator = this.game.time.events.loop(Phaser.Timer.SECOND * 1.25, this.generateBuildings, this);
         this.buildingGenerator.timer.start();
         this.berrygenerator = this.game.time.events.loop(Phaser.Timer.SECOND * 5.00, this.generateBerries, this);
@@ -174,7 +174,7 @@ Play.prototype = {
     
   },
   render: function(){
-      this.game.debug.body(this.person_1);
+      this.game.debug.body(this.person);
     if (this.poo){
       this.game.debug.body(this.poo);
     }
