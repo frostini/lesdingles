@@ -19,7 +19,7 @@ game.state.add('preload', PreloadState);
 game.state.start('boot');
 
   
-},{"./states/boot":10,"./states/menu":11,"./states/play":12,"./states/preload":13}],2:[function(require,module,exports){
+},{"./states/boot":11,"./states/menu":12,"./states/play":13,"./states/preload":14}],2:[function(require,module,exports){
 'use strict';
 var Berry = require('./berry')
 
@@ -468,6 +468,29 @@ Scoreboard.prototype.update = function() {
 module.exports = Scoreboard;
 
 },{}],10:[function(require,module,exports){
+// 'use strict';
+
+// var Shit = function(game, x, y, frame) {
+  // Phaser.Sprite.call(this, game, x, y, 'shit', frame);
+	// this.game.physics.arcade.enableBody(this);
+  // initialize your prefab here
+  
+// };
+
+// Shit.prototype = Object.create(Phaser.Sprite.prototype);
+// Shit.prototype.constructor = Shit;
+
+// Shit.prototype.update = function() {
+  
+  // write your prefab's specific update code here
+  
+// };
+
+// module.exports = Shit;
+
+
+
+},{}],11:[function(require,module,exports){
 
 'use strict';
 
@@ -486,7 +509,7 @@ Boot.prototype = {
 
 module.exports = Boot;
 
-},{}],11:[function(require,module,exports){
+},{}],12:[function(require,module,exports){
 
 'use strict';
 function Menu() {
@@ -555,7 +578,7 @@ Menu.prototype = {
 
 module.exports = Menu;
 
-},{}],12:[function(require,module,exports){
+},{}],13:[function(require,module,exports){
 'use strict';
 var Bird = require('../prefabs/bird');
 var Ground = require('../prefabs/ground');
@@ -564,7 +587,7 @@ var Berries = require('../prefabs/berries');
 var Person1 = require('../prefabs/person_1');
 var BuildingGroup = require('../prefabs/buildingGroup');
 var Scoreboard = require('../prefabs/scoreboard');
-// var Shit = require('../prefabs/shit');
+var Shit = require('../prefabs/shit');
 
 function Play() {
 }
@@ -580,54 +603,19 @@ Play.prototype = {
     // add the background sprite
     this.background = this.game.add.sprite(0,0,'background');
 
-    // create and add a group to hold our pipeGroup prefabs
-    // this.pipes = this.game.add.group();
     
     // create and add a new Bird object
     this.bird = new Bird(this.game, 100, this.game.height/2);
     this.game.add.existing(this.bird);
     
-    // this.walk = this.person.animations.add('walk');
-    // this.person_1 = new Person1(this.game, 200, 400);
-    // this.game.add.existing(this.person_1);
-    this.person = this.game.add.sprite(200, 350, 'person')
-      this.person.animations.add('walk');
-    this.person.animations.play('walk', 13, true); 
- this.game.physics.arcade.enableBody(this.person);
- this.person.body.allowGravity = false;
-
+    // create person to instantiate on game start
+    this.person_1 = new Person1(this.game, this.game.width, 400);
 
 // !!Creating group to contain buildingGroups!!
-this.buildings = this.game.add.group();
-
-
-
-// this.BuildingGroup = new BuildingGroup(this.game);
-// this.game.add.existing(this.BuildingGroup);
-
-
-    // this.berry = new Berry(this.game, 200, 50, 1);
-    // this.game.add.existing(this.berry);
-    // adding berry
-    // this.berries = this.game.add.group();
-    // this.berries.createMultiple(10, 'berry');
-    // this.berries.enablebody = true;
-    //     this.shit = new Shit(this.game, 100, this.game.height/2);
-    // this.game.add.existing(this.shit);
-    // this.game.physics.arcade.enable(this.berries);
-    // this.game.physics.enable(this.berries, Phaser.Physics.ARCADE);
-
-    // this.berries.body.velocity.x = -500;
+    this.buildings = this.game.add.group();
 
     // create and add a new Ground object
     this.losberries = this.game.add.group()
-
-
-    // this.game.add.tween(person).to({x: -30}, 10000, Phaser.Easing.Linear.None, true);
-// this.game.physics.enable(this.person, Phaser.Physics.ARCADE);
-    // person.body.velocity.y = 0;
-    // person.body.collideWorldBounds = true;
-// this.person.body.immovable = true;
 
 
     this.ground = new Ground(this.game, 0, 450, 335, 112);
@@ -665,8 +653,6 @@ this.buildings = this.game.add.group();
     this.instructionGroup.setAll('anchor.x', 0.5);
     this.instructionGroup.setAll('anchor.y', 0.5);
 
-    // this.pipeGenerator = null;
-
     this.gameover = false;
 
     // this.pipeHitSound = this.game.add.audio('pipeHit');
@@ -675,54 +661,24 @@ this.buildings = this.game.add.group();
     // this.timer = this.game.time.events.loop(5000, this.addOneTreat, this);
 
 
-
-
-
   },
 
   update: function() {
  
-   this.person.x -= 2;
-    if (this.person.x < -this.person.width)
-    {
-        this.person.x = this.game.world.width;
-    }
-
-
-
+   // this.person.x -= 2;
+   //  if (this.person.x < -this.person.width)
+   //    {this.person.x = this.game.world.width;
+   //  }
 
     // enable collisions between the bird and the ground
     this.game.physics.arcade.collide(this.bird, this.ground, this.deathHandler, null, this);
-    this.game.physics.arcade.collide(this.person, this.poo, this.shittySituation, null, this);
-    // this.game.physics.arcade.collide(this.person_1, this.poo, this.shittySituation, null, this);
+    // this.game.physics.arcade.collide(this.person, this.poo, this.shittySituation, null, this);
+    this.game.physics.arcade.collide(this.person_1, this.poo, this.shittySituation, null, this);
     // this.game.physics.arcade.collide(this.bird, this.BuildingGroup, this.deathHandler, null, this);
    
     this.buildings.forEach(function(buildingGroup) {
         this.game.physics.arcade.collide(this.bird, buildingGroup, this.deathHandler, null, this);
     }, this);
-
-
-
-
-// if(!this.gameOver){
-//     if(this.player.body.bottom >= this.world.bounds.bottom){
-//         this.setGameOver();
-//     }
-// }
-
-   // if (game.input.keyboard.isDown(Phaser.Keyboard.SPACEBAR))
-   //  {
-   //      this.bird.shit();
-   //  }
-
-
-    // if(!this.gameover) {    
-    //     // enable collisions between the bird and each group in the pipes group
-    //     this.pipes.forEach(function(pipeGroup) {
-    //         this.checkScore(pipeGroup);
-    //         this.game.physics.arcade.collide(this.bird, pipeGroup, this.deathHandler, null, this);
-    //     }, this);
-    // }
 
   },
   generateBuildings: function(){
@@ -740,18 +696,8 @@ this.buildings = this.game.add.group();
   },
   yay: function(){
     console.log('yayyed');
-    // var yayy = this.add.image()
-      this.poo = this.add.sprite(this.bird.x, this.bird.y, 'shit');
-      this.game.physics.arcade.enableBody(this.poo);
-        // poo.enableBody = true;
-        // this.game.physics.enable(poo, Phaser.Physics.ARCADE);
-        // poo.body.velocity.y = -500;0
-        // poo.allowGravity = true;
-        // poo.scale.setTo(1,1);
-
-  // this.game.physics.arcade.enableBody(poo);
-  // this.body.allowGravity = false;
-  // this.body.collideWorldBounds = true;
+    this.poo = this.add.sprite(this.bird.x, this.bird.y, 'shit');
+    this.game.physics.arcade.enableBody(this.poo);
 
   },
   generateBerries: function() {
@@ -761,54 +707,21 @@ this.buildings = this.game.add.group();
     berriesGroup.x = this.game.width;
     berriesGroup.y = berryY;
   },
-  //   addOneTreat: function(x, y) {
-  // var treat = this.berries.getFirstDead(),
-  //     nth = Math.floor(Math.random()*5);
-  //   treat.enablebody = true;
-  //   treat.reset(this.game.width, 200);
-  //   treat.body.allowGravity = false;
-  //   treat.body.immovable = true;
-  //   treat.body.velocity.x= -200;
-  //   treat.body.velocity.y= 0;
-  //   // treat.body.velocity.y= 0;
-  //   // treat.body.immovable = true
-  //   treat.checkWorldBounds = true;
-  //   treat.outOfBoundsKill = true;
-  //   console.log("yo im a berry")
-  //   },
-
-//   addBerries: function() {
-//     for
-//   }
-//     addBlock: function() {
-//   var treat = this.berries.getFirstDead(),
-//       nth = Math.floor(Math.random()*5);
-
-//   treat.reset(this.game.width, nth * this.game.height/5);
-//   treat.body.velocity.x = -150;
-//   treat.checkWorldBounds = true;
-//   treat.outOfBoundsKill = true;
-// },
   shutdown: function() {
     this.game.input.keyboard.removeKey(Phaser.Keyboard.SPACEBAR);
     this.bird.destroy();
-    // this.pipes.destroy();
     this.scoreboard.destroy();
   },
   startGame: function() {
     if(!this.bird.alive && !this.gameover) {
         this.bird.body.allowGravity = true;
         this.bird.alive = true;
-        // add a timer
-        // this.pipeGenerator = this.game.time.events.loop(Phaser.Timer.SECOND * 1.25, this.generatePipes, this);
-        // this.pipeGenerator.timer.start();
-
         this.instructionGroup.destroy();
-    this.buildingGenerator = this.game.time.events.loop(Phaser.Timer.SECOND * 1.25, this.generateBuildings, this);
-    this.buildingGenerator.timer.start();
-
-    this.berrygenerator = this.game.time.events.loop(Phaser.Timer.SECOND * 5.00, this.generateBerries, this);
-    this.berrygenerator.timer.start();
+        this.game.add.existing(this.person_1);
+        this.buildingGenerator = this.game.time.events.loop(Phaser.Timer.SECOND * 1.25, this.generateBuildings, this);
+        this.buildingGenerator.timer.start();
+        this.berrygenerator = this.game.time.events.loop(Phaser.Timer.SECOND * 5.00, this.generateBerries, this);
+        this.berrygenerator.timer.start();
 
     }
   },
@@ -834,35 +747,24 @@ this.buildings = this.game.add.group();
     if(!this.gameover) {
         this.gameover = true;
         this.bird.kill();
-        // this.pipes.callAll('stop');
-        // this.pipeGenerator.timer.stop();
         this.berrygenerator.timer.stop();
+        this.buildings.callAll('stop');
+        this.buildingGenerator.timer.stop();
         this.ground.stopScroll();
     }
     
   },
   render: function(){
-      // this.game.debug.body(this.person);
-    // if (this.poo){
-      // this.game.debug.body(this.poo);
-    // }
+      this.game.debug.body(this.person_1);
+    if (this.poo){
+      this.game.debug.body(this.poo);
+    }
   }
-  //,
-  // generatePipes: function() {
-    // var pipeY = this.game.rnd.integerInRange(-100, 100);
-    // var pipeGroup = this.pipes.getFirstExists(false);
-    // if(!pipeGroup) {
-        // pipeGroup = new PipeGroup(this.game, this.pipes);  
-  //   }
-  //   // pipeGroup.reset(this.game.width, pipeY);
-    
-
-  // }
 };
 
 module.exports = Play;
 
-},{"../prefabs/berries":2,"../prefabs/berry":3,"../prefabs/bird":4,"../prefabs/buildingGroup":6,"../prefabs/ground":7,"../prefabs/person_1":8,"../prefabs/scoreboard":9}],13:[function(require,module,exports){
+},{"../prefabs/berries":2,"../prefabs/berry":3,"../prefabs/bird":4,"../prefabs/buildingGroup":6,"../prefabs/ground":7,"../prefabs/person_1":8,"../prefabs/scoreboard":9,"../prefabs/shit":10}],14:[function(require,module,exports){
 
 'use strict';
 function Preload() {
