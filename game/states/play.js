@@ -3,9 +3,9 @@ var Bird = require('../prefabs/bird');
 var Ground = require('../prefabs/ground');
 var Berry = require('../prefabs/berry');
 var Berries = require('../prefabs/berries');
-var Person1 = require('../prefabs/person_1')
-var Building = require('../prefabs/building')
-var BuildingGroup = require('../prefabs/buildingGroup')
+var Person1 = require('../prefabs/person_1');
+// var Building = require('../prefabs/building')
+var BuildingGroup = require('../prefabs/buildingGroup');
 // var Pipe = require('../prefabs/pipe');
 // var PipeGroup = require('../prefabs/pipeGroup');
 var Scoreboard = require('../prefabs/scoreboard');
@@ -35,6 +35,10 @@ Play.prototype = {
     // this.walk = this.person.animations.add('walk');
     this.person_1 = new Person1(this.game, 200, 400);
     this.game.add.existing(this.person_1);
+
+
+// !!Creating group to contain buildingGroups!!
+this.buildings = this.game.add.group();
 
 
 
@@ -116,7 +120,12 @@ Play.prototype = {
     // this.timer = this.game.time.events.loop(5000, this.addOneTreat, this);
     this.berrygenerator = this.game.time.events.loop(Phaser.Timer.SECOND * 5.00, this.generateBerries, this);
     this.berrygenerator.timer.start();
+
+
+
+
   },
+
   update: function() {
  
    this.person.x -= 2;
@@ -153,12 +162,17 @@ Play.prototype = {
     //         this.game.physics.arcade.collide(this.bird, pipeGroup, this.deathHandler, null, this);
     //     }, this);
     // }
-  
 
-
-
-
-
+  },
+  generateBuildings: function(){
+    console.log('called buildingGenerator');
+    var buildingGroup = this.buildings.getFirstExists(false);
+    if (!buildingGroup) { 
+        buildingGroup = new BuildingGroup(this.game, this.buildings);
+        // buildingGroup.x = this.game.width;
+        // buildingGroup.y = 300;
+    }
+    buildingGroup.reset(this.game.width, 252);
   },
   shittySituation: function(person, poo){
     console.log('i got yayyyyeed');
@@ -229,6 +243,8 @@ Play.prototype = {
         // this.pipeGenerator.timer.start();
 
         this.instructionGroup.destroy();
+    this.buildingGenerator = this.game.time.events.loop(Phaser.Timer.SECOND * 1.25, this.generateBuildings, this);
+    this.buildingGenerator.timer.start();
     }
   },
   checkScore: function(pipeGroup) {

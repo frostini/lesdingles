@@ -154,13 +154,14 @@ module.exports = Bird;
 },{}],5:[function(require,module,exports){
 
 var Building = function(game, x, y, frame) {
-  // Phaser.Sprite.call(this, game, x, y, 'building_1', frame);
-  // this.anchor.setTo(0.5, 0.5);
+  Phaser.Sprite.call(this, game, x, y, 'building_1', frame);
+  this.anchor.setTo(0.5, 0.5);
+  this.game.physics.arcade.enableBody(this);
   // this.name = 'building_1';
   // this.alive = false;
   // this.onGround = false;
-  // this.game.physics.arcade.enableBody(this);
-  // this.body.allowGravity = false;
+  this.body.allowGravity = false;
+  this.body.immovable = true;
 };
 
 Building.prototype = Object.create(Phaser.Sprite.prototype);
@@ -195,36 +196,39 @@ module.exports = Building;
 },{}],6:[function(require,module,exports){
 'use strict';
 
-// var Building = require('./building');
+var Building = require('./building');
 
 var BuildingGroup = function(game, parent) {
-  // Phaser.Group.call(this, game, parent);
-  // this.firstBuilding = new Building(this.game, 0, 0);
-  // this.add(this.firstBuilding);
-  // this.hasScored = false;
-  // this.setAll('body.velocity.x', -100);
+  Phaser.Group.call(this, game, parent);
+  this.firstBuilding = new Building(this.game, 0, 0, 0);
+  this.add(this.firstBuilding);
+  
+  this.hasScored = false;
+  this.setAll('body.velocity.x', -200);
 };
 
 BuildingGroup.prototype = Object.create(Phaser.Group.prototype);
 BuildingGroup.prototype.constructor = BuildingGroup;
 
 BuildingGroup.prototype.update = function() {
-  // this.checkWorldBounds(); 
+  this.checkWorldBounds(); 
 };
 
 BuildingGroup.prototype.checkWorldBounds = function() {
-  // if(!this.firstBuilding.inWorld) {
-  //   this.exists = false;
-  // }
+  if(!this.firstBuilding.inWorld) {
+    this.exists = false;
+  }
 };
 
 
 BuildingGroup.prototype.reset = function(x, y) {
-  // this.firstBuilding.reset(0,0);
-  // this.x = x;
-  // this.y = y;
-  // this.setAll('body.velocity.x', -100);
-  // this.exists = true;
+  this.firstBuilding.reset(0, 0);
+  this.x = x;
+  this.y = y;
+  this.setAll('body.velocity.x', -200);
+  this.hasScored = false;
+  this.exists = true;
+  console.log('called reset function within building group');
 };
 
 
@@ -233,7 +237,7 @@ BuildingGroup.prototype.stop = function() {
 };
 
 module.exports = BuildingGroup;
-},{}],7:[function(require,module,exports){
+},{"./building":5}],7:[function(require,module,exports){
 'use strict';
 
 var Ground = function(game, x, y, width, height) {
@@ -557,9 +561,9 @@ var Bird = require('../prefabs/bird');
 var Ground = require('../prefabs/ground');
 var Berry = require('../prefabs/berry');
 var Berries = require('../prefabs/berries');
-var Person1 = require('../prefabs/person_1')
-var Building = require('../prefabs/building')
-var BuildingGroup = require('../prefabs/buildingGroup')
+var Person1 = require('../prefabs/person_1');
+// var Building = require('../prefabs/building')
+var BuildingGroup = require('../prefabs/buildingGroup');
 // var Pipe = require('../prefabs/pipe');
 // var PipeGroup = require('../prefabs/pipeGroup');
 var Scoreboard = require('../prefabs/scoreboard');
@@ -589,6 +593,10 @@ Play.prototype = {
     // this.walk = this.person.animations.add('walk');
     this.person_1 = new Person1(this.game, 200, 400);
     this.game.add.existing(this.person_1);
+
+
+// !!Creating group to contain buildingGroups!!
+this.buildings = this.game.add.group();
 
 
 
@@ -670,7 +678,12 @@ Play.prototype = {
     // this.timer = this.game.time.events.loop(5000, this.addOneTreat, this);
     this.berrygenerator = this.game.time.events.loop(Phaser.Timer.SECOND * 5.00, this.generateBerries, this);
     this.berrygenerator.timer.start();
+
+
+
+
   },
+
   update: function() {
  
    this.person.x -= 2;
@@ -707,12 +720,17 @@ Play.prototype = {
     //         this.game.physics.arcade.collide(this.bird, pipeGroup, this.deathHandler, null, this);
     //     }, this);
     // }
-  
 
-
-
-
-
+  },
+  generateBuildings: function(){
+    console.log('called buildingGenerator');
+    var buildingGroup = this.buildings.getFirstExists(false);
+    if (!buildingGroup) { 
+        buildingGroup = new BuildingGroup(this.game, this.buildings);
+        // buildingGroup.x = this.game.width;
+        // buildingGroup.y = 300;
+    }
+    buildingGroup.reset(this.game.width, 252);
   },
   shittySituation: function(person, poo){
     console.log('i got yayyyyeed');
@@ -783,6 +801,8 @@ Play.prototype = {
         // this.pipeGenerator.timer.start();
 
         this.instructionGroup.destroy();
+    this.buildingGenerator = this.game.time.events.loop(Phaser.Timer.SECOND * 1.25, this.generateBuildings, this);
+    this.buildingGenerator.timer.start();
     }
   },
   checkScore: function(pipeGroup) {
@@ -835,7 +855,7 @@ Play.prototype = {
 
 module.exports = Play;
 
-},{"../prefabs/berries":2,"../prefabs/berry":3,"../prefabs/bird":4,"../prefabs/building":5,"../prefabs/buildingGroup":6,"../prefabs/ground":7,"../prefabs/person_1":8,"../prefabs/scoreboard":9}],13:[function(require,module,exports){
+},{"../prefabs/berries":2,"../prefabs/berry":3,"../prefabs/bird":4,"../prefabs/buildingGroup":6,"../prefabs/ground":7,"../prefabs/person_1":8,"../prefabs/scoreboard":9}],13:[function(require,module,exports){
 
 'use strict';
 function Preload() {
