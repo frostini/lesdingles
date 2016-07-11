@@ -19,7 +19,7 @@ game.state.add('preload', PreloadState);
 game.state.start('boot');
 
   
-},{"./states/boot":7,"./states/menu":8,"./states/play":9,"./states/preload":10}],2:[function(require,module,exports){
+},{"./states/boot":10,"./states/menu":11,"./states/play":12,"./states/preload":13}],2:[function(require,module,exports){
 'use strict';
 var Berry = require('./berry')
 
@@ -76,7 +76,7 @@ var Bird = function(game, x, y, frame) {
   Phaser.Sprite.call(this, game, x, y, 'bird', frame);
   this.anchor.setTo(0.5, 0.5);
   this.animations.add('flap');
-  this.animations.play('flap', 12, true);
+  this.animations.play('flap', 20, true);
 
   this.flapSound = this.game.add.audio('flap');
 
@@ -152,12 +152,94 @@ module.exports = Bird;
 
 
 },{}],5:[function(require,module,exports){
+
+var Building = function(game, x, y, frame) {
+  // Phaser.Sprite.call(this, game, x, y, 'building_1', frame);
+  // this.anchor.setTo(0.5, 0.5);
+  // this.name = 'building_1';
+  // this.alive = false;
+  // this.onGround = false;
+  // this.game.physics.arcade.enableBody(this);
+  // this.body.allowGravity = false;
+};
+
+Building.prototype = Object.create(Phaser.Sprite.prototype);
+Building.prototype.constructor = Building;
+
+Building.prototype.update = function() {
+  // if(!this.alive) {
+  //   this.body.velocity.x = 50;
+  // }
+
+  //  this.body.x -= 2;
+  //   if (this.body.x < -this.body.width)
+  //   {
+  //       this.body.x = this.game.world.width;
+  //   }
+
+};
+
+Building.prototype.walking = function() {
+  // if(!!this.alive) {
+  // }
+};
+Building.prototype.revived = function() { 
+};
+
+Building.prototype.onKilled = function() {
+};
+
+module.exports = Building;
+
+
+},{}],6:[function(require,module,exports){
+'use strict';
+
+// var Building = require('./building');
+
+var BuildingGroup = function(game, parent) {
+  // Phaser.Group.call(this, game, parent);
+  // this.firstBuilding = new Building(this.game, 0, 0);
+  // this.add(this.firstBuilding);
+  // this.hasScored = false;
+  // this.setAll('body.velocity.x', -100);
+};
+
+BuildingGroup.prototype = Object.create(Phaser.Group.prototype);
+BuildingGroup.prototype.constructor = BuildingGroup;
+
+BuildingGroup.prototype.update = function() {
+  // this.checkWorldBounds(); 
+};
+
+BuildingGroup.prototype.checkWorldBounds = function() {
+  // if(!this.firstBuilding.inWorld) {
+  //   this.exists = false;
+  // }
+};
+
+
+BuildingGroup.prototype.reset = function(x, y) {
+  // this.firstBuilding.reset(0,0);
+  // this.x = x;
+  // this.y = y;
+  // this.setAll('body.velocity.x', -100);
+  // this.exists = true;
+};
+
+
+BuildingGroup.prototype.stop = function() {
+  // this.setAll('body.velocity.x', 0);
+};
+
+module.exports = BuildingGroup;
+},{}],7:[function(require,module,exports){
 'use strict';
 
 var Ground = function(game, x, y, width, height) {
   Phaser.TileSprite.call(this, game, x, y, width, height, 'ground');
   // start scrolling our ground
-  this.autoScroll(-400,0);
+  this.autoScroll(-300,0);
   
   // enable physics on the ground sprite
   // this is needed for collision detection
@@ -181,7 +263,103 @@ Ground.prototype.update = function() {
 };
 
 module.exports = Ground;
-},{}],6:[function(require,module,exports){
+},{}],8:[function(require,module,exports){
+
+var Person = function(game, x, y, frame) {
+  Phaser.Sprite.call(this, game, x, y, 'person_1', frame);
+  this.anchor.setTo(0.5, 0.5);
+  // this.animations.add('flap');
+  // this.animations.play('flap', 12, true);
+  this.animations.add('walk');
+  this.animations.play('walk', 10, true);
+  // this.flapSound = this.game.add.audio('flap');
+
+  this.name = 'person_1';
+  this.alive = false;
+  this.onGround = false;
+
+
+  // enable physics on the Person
+  // and disable gravity on the Person
+  // until the game is started
+  this.game.physics.arcade.enableBody(this);
+  this.body.allowGravity = false;
+  // this.body.collideWorldBounds = true;
+
+  // this.events.onKilled.add(this.onKilled, this);
+
+  
+  
+};
+
+Person.prototype = Object.create(Phaser.Sprite.prototype);
+Person.prototype.constructor = Person;
+
+Person.prototype.update = function() {
+  // check to see if our angle is less than 90
+  // if it is rotate the Person towards the ground by 2.5 degrees
+  // if(this.angle < 90 && this.alive) {
+    // this.angle += 2.5;
+  // } 
+
+  if(!this.alive) {
+    this.body.velocity.x = -0;
+
+  }
+
+   this.body.x -= 2;
+    if (this.body.x < -this.body.width)
+    {
+        this.body.x = this.game.world.width;
+    }
+
+
+
+
+};
+
+Person.prototype.walking = function() {
+    // this.walk = this.person.animations.add('walk');
+    
+
+  if(!!this.alive) {
+    this.animations.play('walk', 20, true);
+    // this.flapSound.play();
+    //cause our Person to "jump" upward
+    // this.body.velocity.y = -400;
+    // rotate the Person to -40 degrees
+    // this.game.add.tween(this).to({angle: -40}, 100).start();
+  }
+};
+
+// Person.prototype.shit = function() {
+  // if(!!this.alive) {
+    // this.shit = new Shit(this.game, 100, this.game.height/2);
+//     this.game.add.existing(this.shit);
+
+    // console.log("Im shittttttinnnnnnn")
+    // this.shit = new Shit(this.game, 100, this.game.height/2);
+    // this.game.add.existing(this.shit);
+  // }
+// }
+
+Person.prototype.revived = function() { 
+};
+
+Person.prototype.onKilled = function() {
+  // this.exists = true;
+  // this.visible = true;
+  // this.animations.stop();
+  // var duration = 90 / this.y * 300;
+  // this.game.add.tween(this).to({angle: 90}, duration).start();
+  // console.log('killed');
+  // console.log('alive:', this.alive);
+};
+
+module.exports = Person;
+
+
+},{}],9:[function(require,module,exports){
 'use strict';
 
 var Scoreboard = function(game) {
@@ -285,7 +463,7 @@ Scoreboard.prototype.update = function() {
 
 module.exports = Scoreboard;
 
-},{}],7:[function(require,module,exports){
+},{}],10:[function(require,module,exports){
 
 'use strict';
 
@@ -304,7 +482,7 @@ Boot.prototype = {
 
 module.exports = Boot;
 
-},{}],8:[function(require,module,exports){
+},{}],11:[function(require,module,exports){
 
 'use strict';
 function Menu() {
@@ -321,7 +499,7 @@ Menu.prototype = {
     
     // add the ground sprite as a tile
     // and start scrolling in the negative x direction
-    this.ground = this.game.add.tileSprite(0,400, 335,112,'ground');
+    this.ground = this.game.add.tileSprite(0,448, 335,56,'ground');
     this.ground.autoScroll(-200,0);
 
     /** STEP 1 **/
@@ -373,13 +551,15 @@ Menu.prototype = {
 
 module.exports = Menu;
 
-},{}],9:[function(require,module,exports){
-
+},{}],12:[function(require,module,exports){
 'use strict';
 var Bird = require('../prefabs/bird');
 var Ground = require('../prefabs/ground');
 var Berry = require('../prefabs/berry');
 var Berries = require('../prefabs/berries');
+var Person1 = require('../prefabs/person_1')
+var Building = require('../prefabs/building')
+var BuildingGroup = require('../prefabs/buildingGroup')
 // var Pipe = require('../prefabs/pipe');
 // var PipeGroup = require('../prefabs/pipeGroup');
 var Scoreboard = require('../prefabs/scoreboard');
@@ -406,6 +586,15 @@ Play.prototype = {
     this.bird = new Bird(this.game, 100, this.game.height/2);
     this.game.add.existing(this.bird);
     
+    // this.walk = this.person.animations.add('walk');
+    this.person_1 = new Person1(this.game, 200, 400);
+    this.game.add.existing(this.person_1);
+
+
+
+// this.BuildingGroup = new BuildingGroup(this.game);
+// this.game.add.existing(this.BuildingGroup);
+
 
     // this.berry = new Berry(this.game, 200, 50, 1);
     // this.game.add.existing(this.berry);
@@ -422,11 +611,9 @@ Play.prototype = {
 
     // create and add a new Ground object
     this.losberries = this.game.add.group()
-    this.person = this.game.add.sprite(200, 380, 'person')
-    
-    this.walk = this.person.animations.add('walk');
-    this.person.animations.play('walk', 10, true);
-    
+    this.person = this.game.add.sprite(200, 350, 'person')
+      this.person.animations.add('walk');
+    this.person.animations.play('walk', 13, true); 
 
 
     // this.game.add.tween(person).to({x: -30}, 10000, Phaser.Easing.Linear.None, true);
@@ -438,7 +625,7 @@ Play.prototype = {
 // this.person.body.immovable = true;
 
 
-    this.ground = new Ground(this.game, 0, 400, 335, 112);
+    this.ground = new Ground(this.game, 0, 450, 335, 112);
     this.game.add.existing(this.ground);
     
 
@@ -469,7 +656,7 @@ Play.prototype = {
 
     this.instructionGroup = this.game.add.group();
     this.instructionGroup.add(this.game.add.sprite(this.game.width/2, 100,'getReady'));
-    this.instructionGroup.add(this.game.add.sprite(this.game.width/2, 325,'instructions'));
+    this.instructionGroup.add(this.game.add.sprite(this.game.width/2, 180,'instructions'));
     this.instructionGroup.setAll('anchor.x', 0.5);
     this.instructionGroup.setAll('anchor.y', 0.5);
 
@@ -494,9 +681,19 @@ Play.prototype = {
 
 
 
+
     // enable collisions between the bird and the ground
     this.game.physics.arcade.collide(this.bird, this.ground, this.deathHandler, null, this);
     this.game.physics.arcade.collide(this.person, this.poo, this.shittySituation, null, this);
+    this.game.physics.arcade.collide(this.person_1, this.poo, this.shittySituation, null, this);
+    this.game.physics.arcade.collide(this.bird, this.BuildingGroup, this.deathHandler, null, this);
+   
+// if(!this.gameOver){
+//     if(this.player.body.bottom >= this.world.bounds.bottom){
+//         this.setGameOver();
+//     }
+// }
+
    // if (game.input.keyboard.isDown(Phaser.Keyboard.SPACEBAR))
    //  {
    //      this.bird.shit();
@@ -618,10 +815,10 @@ Play.prototype = {
     
   },
   render: function(){
-      this.game.debug.body(this.person);
-    if (this.poo){
-      this.game.debug.body(this.poo);
-    }
+      // this.game.debug.body(this.person);
+    // if (this.poo){
+      // this.game.debug.body(this.poo);
+    // }
   }
   //,
   // generatePipes: function() {
@@ -638,7 +835,7 @@ Play.prototype = {
 
 module.exports = Play;
 
-},{"../prefabs/berries":2,"../prefabs/berry":3,"../prefabs/bird":4,"../prefabs/ground":5,"../prefabs/scoreboard":6}],10:[function(require,module,exports){
+},{"../prefabs/berries":2,"../prefabs/berry":3,"../prefabs/bird":4,"../prefabs/building":5,"../prefabs/buildingGroup":6,"../prefabs/ground":7,"../prefabs/person_1":8,"../prefabs/scoreboard":9}],13:[function(require,module,exports){
 
 'use strict';
 function Preload() {
@@ -653,17 +850,19 @@ Preload.prototype = {
 
     this.load.onLoadComplete.addOnce(this.onLoadComplete, this);
     this.load.setPreloadSprite(this.asset);
-    this.load.image('background', 'assets/background.png');
-    this.load.image('ground', 'assets/ground.png');
+    this.load.image('background', 'assets/city_skyline_1.png');
+    this.load.image('ground', 'assets/road_me_doo.png');
     this.load.image('title', 'assets/title.png');
-    this.load.spritesheet('bird', 'assets/bird.png', 34,24,3);
-    this.load.spritesheet('person', 'assets/personwalking.png', 16, 23, 4);
+    this.load.spritesheet('building_1', 'assets/building_7.png', 83, 317, 1);
+    this.load.spritesheet('bird', 'assets/bird_sprite_1.png', 50,44,8);
+    this.load.spritesheet('person', 'assets/hannah_sprite_3.png', 36, 70, 4);
+    this.load.spritesheet('person_1', 'assets/hannah_sprite_3.png', 36, 70, 4);
     // this.load.spritesheet('pipe', 'assets/pipes.png', 54,320,2);
     this.load.image('startButton', 'assets/start-button.png');
     this.load.spritesheet('shit', 'assets/shit.png', 12,12,1);
     this.load.spritesheet('berry', 'assets/berry.png', 10, 10, 1);
 
-    this.load.image('instructions', 'assets/instructions.png');
+    this.load.image('instructions', 'assets/instructable.png');
     this.load.image('getReady', 'assets/get-ready.png');
     
     this.load.image('scoreboard', 'assets/scoreboard.png');

@@ -1,9 +1,11 @@
-
 'use strict';
 var Bird = require('../prefabs/bird');
 var Ground = require('../prefabs/ground');
 var Berry = require('../prefabs/berry');
 var Berries = require('../prefabs/berries');
+var Person1 = require('../prefabs/person_1')
+var Building = require('../prefabs/building')
+var BuildingGroup = require('../prefabs/buildingGroup')
 // var Pipe = require('../prefabs/pipe');
 // var PipeGroup = require('../prefabs/pipeGroup');
 var Scoreboard = require('../prefabs/scoreboard');
@@ -30,6 +32,15 @@ Play.prototype = {
     this.bird = new Bird(this.game, 100, this.game.height/2);
     this.game.add.existing(this.bird);
     
+    // this.walk = this.person.animations.add('walk');
+    this.person_1 = new Person1(this.game, 200, 400);
+    this.game.add.existing(this.person_1);
+
+
+
+// this.BuildingGroup = new BuildingGroup(this.game);
+// this.game.add.existing(this.BuildingGroup);
+
 
     // this.berry = new Berry(this.game, 200, 50, 1);
     // this.game.add.existing(this.berry);
@@ -46,11 +57,9 @@ Play.prototype = {
 
     // create and add a new Ground object
     this.losberries = this.game.add.group()
-    this.person = this.game.add.sprite(200, 380, 'person')
-    
-    this.walk = this.person.animations.add('walk');
-    this.person.animations.play('walk', 10, true);
-    
+    this.person = this.game.add.sprite(200, 350, 'person')
+      this.person.animations.add('walk');
+    this.person.animations.play('walk', 13, true); 
 
 
     // this.game.add.tween(person).to({x: -30}, 10000, Phaser.Easing.Linear.None, true);
@@ -62,7 +71,7 @@ Play.prototype = {
 // this.person.body.immovable = true;
 
 
-    this.ground = new Ground(this.game, 0, 400, 335, 112);
+    this.ground = new Ground(this.game, 0, 450, 335, 112);
     this.game.add.existing(this.ground);
     
 
@@ -93,7 +102,7 @@ Play.prototype = {
 
     this.instructionGroup = this.game.add.group();
     this.instructionGroup.add(this.game.add.sprite(this.game.width/2, 100,'getReady'));
-    this.instructionGroup.add(this.game.add.sprite(this.game.width/2, 325,'instructions'));
+    this.instructionGroup.add(this.game.add.sprite(this.game.width/2, 180,'instructions'));
     this.instructionGroup.setAll('anchor.x', 0.5);
     this.instructionGroup.setAll('anchor.y', 0.5);
 
@@ -118,9 +127,19 @@ Play.prototype = {
 
 
 
+
     // enable collisions between the bird and the ground
     this.game.physics.arcade.collide(this.bird, this.ground, this.deathHandler, null, this);
     this.game.physics.arcade.collide(this.person, this.poo, this.shittySituation, null, this);
+    this.game.physics.arcade.collide(this.person_1, this.poo, this.shittySituation, null, this);
+    this.game.physics.arcade.collide(this.bird, this.BuildingGroup, this.deathHandler, null, this);
+   
+// if(!this.gameOver){
+//     if(this.player.body.bottom >= this.world.bounds.bottom){
+//         this.setGameOver();
+//     }
+// }
+
    // if (game.input.keyboard.isDown(Phaser.Keyboard.SPACEBAR))
    //  {
    //      this.bird.shit();
@@ -242,10 +261,10 @@ Play.prototype = {
     
   },
   render: function(){
-      this.game.debug.body(this.person);
-    if (this.poo){
-      this.game.debug.body(this.poo);
-    }
+      // this.game.debug.body(this.person);
+    // if (this.poo){
+      // this.game.debug.body(this.poo);
+    // }
   }
   //,
   // generatePipes: function() {
